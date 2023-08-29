@@ -16,6 +16,7 @@ const Product = sequelize.define("Product", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  // if have time do total sales calculation
 });
 
 module.exports = Product;

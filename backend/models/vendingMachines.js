@@ -16,5 +16,9 @@ const VendingMachines = sequelize.define("VendingMachine", {
     type: DataTypes.JSON,
     allowNull: false,
   },
+  currentCash: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
 });
 module.exports = VendingMachines;
