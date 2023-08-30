@@ -156,6 +156,15 @@ exports.getMachineInventory = async (req, res) => {
   }
 };
 
+exports.getAllVendingMachines = async (req, res) => {
+  try {
+    const vm = await VendingMachine.findAll();
+    return res.status(200).json(vm);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Something went wrong");
+  }
+};
 
 function validateCashInput(body, isTransaction) {
   let coins, notes;
