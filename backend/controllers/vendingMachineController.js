@@ -135,12 +135,13 @@ exports.getMachineInventory = async (req, res) => {
       include: [
         {
           model: Product,
-          attributes: ["productName", "price", "productImage"],
+          attributes: ["productId", "productName", "price", "productImage"],
         },
       ],
     });
     const formattedInventory = inventory.map((item) => {
       return {
+        productId: item.Product.productId,
         productName: item.Product.productName,
         price: item.Product.price,
         productImage: item.Product.productImage,

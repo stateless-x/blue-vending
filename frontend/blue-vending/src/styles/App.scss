@@ -1,0 +1,17 @@
+.header-container {
+  text-align: center;
+  padding: 4rem;
+  
+  @media (max-width: 1024px){
+    padding: 1rem 4rem;
+  }
+}
+
+.header {
+  font-size: 3rem;
+  color: #173ebd;
+}
+
+.subheader {
+  font-weight: 600;
+}

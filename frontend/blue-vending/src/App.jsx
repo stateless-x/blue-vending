@@ -1,9 +1,12 @@
-import "./styles/App.css";
-import {ProductList} from "./components/ProductList";
+import "./styles/App.scss";
+import { ProductList } from "./components/ProductList";
 function App() {
   return (
     <>
-      <h1>Purin Say Hi</h1>
+      <div className="header-container">
+        <h1 className="header">Blue Vending</h1>
+        <h5 className="subheader">Fulfull your belly with happiness</h5>
+      </div>
       <ProductList />
     </>
   );
