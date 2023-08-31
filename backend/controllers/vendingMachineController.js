@@ -135,7 +135,7 @@ exports.getMachineInventory = async (req, res) => {
       include: [
         {
           model: Product,
-          attributes: ["productName", "price"],
+          attributes: ["productName", "price", "productImage"],
         },
       ],
     });
@@ -143,6 +143,7 @@ exports.getMachineInventory = async (req, res) => {
       return {
         productName: item.Product.productName,
         price: item.Product.price,
+        productImage: item.Product.productImage,
         stock: item.stock,
       };
     });
