@@ -2,24 +2,23 @@ import "../styles/product.scss";
 import { useState } from "react";
 import { PaymentUI } from "../components/PaymentUI";
 
-export const Product = ({ product }) => {
+export const Product = ({ product, vendingMachineId }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [showPaymentUI, setShowPaymentUI] = useState(false);
 
   const handleSelect = () => {
     setShowDialog(true);
-    setShowPaymentUI(true)
+    setShowPaymentUI(true);
     document.body.classList.add("no-scroll");
   };
 
   const closeDialog = () => {
     setShowDialog(false);
-    setShowPaymentUI(false)
+    setShowPaymentUI(false);
     document.body.classList.remove("no-scroll");
   };
 
-  const handleConfirm = () => {
-    // do api call for transcation
+  const handleConfirm = async () => {
     setShowDialog(false);
   };
 
@@ -40,18 +39,14 @@ export const Product = ({ product }) => {
       {showDialog && (
         <>
           <div className="overlay"></div>
-          <div className="confirm-dialogue">
-            <p>Are you sure you sure?</p>
-            <div className="dialogue-actions">
-              <button className="cancel" onClick={closeDialog}>
-                Cancel
-              </button>
-              <button className="confirm" onClick={handleConfirm}>
-                Confirm
-              </button>
-            </div>
-          </div>
-          <PaymentUI isVisible={showPaymentUI}/>
+          <PaymentUI
+            isVisible={showPaymentUI}
+            onConfirm={handleConfirm}
+            onCancel={closeDialog}
+            price={product.price}
+            vendingMachineId={vendingMachineId}
+            productId={product.productId}
+          />
         </>
       )}
     </div>

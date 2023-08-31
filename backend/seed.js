@@ -13,12 +13,12 @@ const seedData = async () => {
   try {
     const vendingMachine1 = await VendingMachine.create(
       {
-        coinStock: JSON.stringify({ Coin1THB: 10, Coin5THB: 15, Coin10THB: 5 }),
-        noteStock: JSON.stringify({
+        coinStock: { Coin1THB: 10, Coin5THB: 15, Coin10THB: 5 },
+        noteStock: {
           Note20THB: 5,
           Note50THB: 7,
           Note100THB: 3,
-        }),
+        },
         currentCash: 885,
       },
       { transaction }
@@ -26,12 +26,12 @@ const seedData = async () => {
 
     const vendingMachine2 = await VendingMachine.create(
       {
-        coinStock: JSON.stringify({ Coin1THB: 20, Coin5THB: 25, Coin10THB: 8 }),
-        noteStock: JSON.stringify({
+        coinStock: { Coin1THB: 20, Coin5THB: 25, Coin10THB: 8 },
+        noteStock: {
           Note20THB: 10,
           Note50THB: 12,
           Note100THB: 6,
-        }),
+        },
         currentCash: 1625,
       },
       { transaction }
@@ -39,12 +39,12 @@ const seedData = async () => {
 
     const vendingMachine3 = await VendingMachine.create(
       {
-        coinStock: JSON.stringify({ Coin1THB: 5, Coin5THB: 10, Coin10THB: 4 }),
-        noteStock: JSON.stringify({
+        coinStock: { Coin1THB: 5, Coin5THB: 10, Coin10THB: 4 },
+        noteStock: {
           Note20THB: 4,
           Note50THB: 6,
           Note100THB: 2,
-        }),
+        },
         currentCash: 540,
       },
       { transaction }
@@ -52,7 +52,7 @@ const seedData = async () => {
 
     const cola = await Product.create(
       {
-        productId:1,
+        productId: 1,
         productName: "Cola",
         price: 20,
         productImage:
@@ -62,7 +62,7 @@ const seedData = async () => {
     );
     const chips = await Product.create(
       {
-        productId:2,
+        productId: 2,
         productName: "Chips",
         price: 15,
         productImage:
@@ -72,7 +72,7 @@ const seedData = async () => {
     );
     const chocolate = await Product.create(
       {
-        productId:3,
+        productId: 3,
         productName: "Chocolate",
         price: 25,
         productImage:
@@ -82,7 +82,7 @@ const seedData = async () => {
     );
     const water = await Product.create(
       {
-        productId:4,
+        productId: 4,
         productName: "Water",
         price: 10,
         productImage:
@@ -92,7 +92,7 @@ const seedData = async () => {
     );
     const juice = await Product.create(
       {
-        productId:5,
+        productId: 5,
         productName: "Juice",
         price: 30,
         productImage:

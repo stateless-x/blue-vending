@@ -114,7 +114,7 @@ exports.processTransaction = async (req, res) => {
     //update coinstock in the machine
     await VendingMachine.update(
       { coinStock, noteStock },
-      { where: { id: vendingMachineId } }
+      { where: { vendingMachineId: vendingMachineId } }
     );
     //update product stock in the machine
     await VendingProduct.decrement("stock", {
