@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import "../styles/paymentUI.scss";
+import "../styles/Product.scss";
+
 export const PaymentUI = ({
   isVisible,
   onConfirm,
@@ -10,7 +12,8 @@ export const PaymentUI = ({
   productId,
 }) => {
   const [cashInserted, setCashInserted] = useState({});
-  const [processing, setProcessing] = useState(false);
+  const [err, setErr] = useState("");
+  const [success, setSuccess] = useState("");
   const cashValues = {
     Coin1THB: { value: 1, display: "+1 THB" },
     Coin5THB: { value: 5, display: "+5 THB" },
@@ -28,13 +31,19 @@ export const PaymentUI = ({
     }));
   };
 
+  const closeDialog = () => {
+    setErr("");
+    setSuccess("");
+    setCashInserted({});
+    onConfirm();
+  };
   const handleConfirm = async () => {
     // Calculate the total amount based on the number of each coin/note entered
     let totalAmount = 0;
     for (const [coinType, count] of Object.entries(cashInserted)) {
       totalAmount += cashValues[coinType].value * count;
     }
-    setProcessing(true);
+
     try {
       const coinsInserted = {};
       const notesInserted = {};
@@ -63,13 +72,14 @@ export const PaymentUI = ({
       );
       console.log("cash inserted: ", cashInserted);
       // close the tab when done processing
-      onConfirm();
       setCashInserted({});
-      console.log("res: ", res);
+      setSuccess(res.data);
     } catch (error) {
-      console.error("Error processing transaction:", error);
+      if (error.response) {
+        setErr(error.response.data);
+      }
+      console.log(error);
     }
-    setProcessing(false);
   };
   return (
     <div className={`payment-container ${isVisible ? "show" : ""}`}>
@@ -98,6 +108,28 @@ export const PaymentUI = ({
       <button className="cancel-payment" onClick={onCancel}>
         Cancel
       </button>
+      {success && (
+        <>
+          <div className="overlay"></div>
+          <div className="dialog">
+            <p className>{success}</p>
+            <button className="dialog-actions" onClick={closeDialog}>
+              OK
+            </button>
+          </div>
+        </>
+      )}
+      {err && (
+        <>
+          <div className="overlay"></div>
+          <div className="dialog">
+            <p className>{err}</p>
+            <button className="dialog-actions" onClick={closeDialog}>
+              OK
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

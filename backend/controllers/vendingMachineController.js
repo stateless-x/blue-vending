@@ -105,15 +105,21 @@ exports.processTransaction = async (req, res) => {
       changeGiven
     );
   }
-
+  console.log("changeToGive: ", changeToGive);
   if (changeToGive > 0) {
-    return res.status(400).send("Sorry, not enough change");
+    return res
+      .status(400)
+      .send("Sorry, not enough change. Please try again later.");
   }
 
   try {
     //update coinstock in the machine
     await VendingMachine.update(
-      { coinStock, noteStock },
+      {
+        coinStock,
+        noteStock,
+        currentCash: calculateTotalCash(coinStock, noteStock),
+      },
       { where: { vendingMachineId: vendingMachineId } }
     );
     //update product stock in the machine
