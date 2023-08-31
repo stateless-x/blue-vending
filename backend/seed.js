@@ -51,23 +51,48 @@ const seedData = async () => {
     );
 
     const cola = await Product.create(
-      { productName: "Cola", price: 20 },
+      {
+        productName: "Cola",
+        price: 20,
+        productImage:
+          "https://www.foodservices.bigc.co.th/media/catalog/product/8/8/8851959144015_1.jpg?auto=webp&format=pjpg&width=580",
+      },
       { transaction }
     );
     const chips = await Product.create(
-      { productName: "Chips", price: 15 },
+      {
+        productName: "Chips",
+        price: 15,
+        productImage:
+          "https://st.bigc-cs.com/cdn-cgi/image/format=webp,quality=90/public/media/catalog/product/11/88/8850718809011/8850718809011_1-20230405133135-.jpg",
+      },
       { transaction }
     );
     const chocolate = await Product.create(
-      { productName: "Chocolate", price: 25 },
+      {
+        productName: "Chocolate",
+        price: 25,
+        productImage:
+          "https://st.bigc-cs.com/cdn-cgi/image/format=webp,quality=85/public/media/catalog/product/81/76/7610400010481/7610400010481_4.jpg",
+      },
       { transaction }
     );
     const water = await Product.create(
-      { productName: "Water", price: 10 },
+      {
+        productName: "Water",
+        price: 10,
+        productImage:
+          "https://st.bigc-cs.com/cdn-cgi/image/format=webp,quality=90/public/media/catalog/product/23/88/8854641002723/8854641002723_3-20230621133429-.jpg",
+      },
       { transaction }
     );
     const juice = await Product.create(
-      { productName: "Juice", price: 30 },
+      {
+        productName: "Juice",
+        price: 30,
+        productImage:
+          "https://st.bigc-cs.com/cdn-cgi/image/format=webp,quality=85/public/media/catalog/product/41/60/6001240100141/6001240100141_1-20230612131901-.jpg",
+      },
       { transaction }
     );
 

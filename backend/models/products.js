@@ -16,7 +16,10 @@ const Product = sequelize.define("Product", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  // if have time do total sales calculation
+  productImage:{
+    type: DataTypes.STRING,
+    allowNull:true
+  }
 });
 
 module.exports = Product;
