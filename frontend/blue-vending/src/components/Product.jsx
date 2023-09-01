@@ -2,7 +2,7 @@ import "../styles/product.scss";
 import { useState, useEffect } from "react";
 import { PaymentUI } from "../components/PaymentUI";
 
-export const Product = ({ product, vendingMachineId }) => {
+export const Product = ({ product, vendingMachineId, onStockUpdate }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [showPaymentUI, setShowPaymentUI] = useState(false);
   
@@ -53,6 +53,7 @@ export const Product = ({ product, vendingMachineId }) => {
             price={product.price}
             vendingMachineId={vendingMachineId}
             productId={product.productId}
+            onTransactionComplete={onStockUpdate}
           />
         </>
       )}

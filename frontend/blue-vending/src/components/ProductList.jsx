@@ -10,7 +10,7 @@ export const ProductList = () => {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const res = await axios.get(`/vending-machine/${vendingMachineId}`);
+        const res = await axios.get(`http://localhost:3000/vending-machine/${vendingMachineId}`);
         setProducts(res.data);
       } catch (error) {
         console.error(error);
@@ -19,6 +19,17 @@ export const ProductList = () => {
 
     fetchInventory();
   }, []);
+  
+  const handleStockUpdate = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/stock/${vendingMachineId}`
+      );
+      setProducts(res.data);
+    } catch (error) {
+      console.error("Error updating products:", error);
+    }
+  };
   return (
     <>
       <div className="product-list-container">
@@ -27,7 +38,7 @@ export const ProductList = () => {
             key={product.productId}
             product={product}
             vendingMachineId={vendingMachineId}
-            fetchInventory={fetchInventory}
+            onStockUpdate={handleStockUpdate}
           />
         ))}
       </div>

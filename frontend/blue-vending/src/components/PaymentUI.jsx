@@ -10,6 +10,7 @@ export const PaymentUI = ({
   price,
   vendingMachineId,
   productId,
+  onTransactionComplete
 }) => {
   const [cashInserted, setCashInserted] = useState({});
   const [err, setErr] = useState("");
@@ -70,6 +71,7 @@ export const PaymentUI = ({
       // close the tab when done processing
       setCashInserted({});
       setSuccess(res.data);
+      onTransactionComplete();
     } catch (error) {
       if (error.response) {
         setErr(error.response.data);
