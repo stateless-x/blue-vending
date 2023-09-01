@@ -100,6 +100,26 @@ const seedData = async () => {
       },
       { transaction }
     );
+    const noodles = await Product.create(
+      {
+        productId: 6,
+        productName: "Noodles",
+        price: 15,
+        productImage:
+          "https://st.bigc-cs.com/cdn-cgi/image/format=webp,quality=90/public/media/catalog/product/05/88/8850987101205/8850987101205_5.jpg",
+      },
+      { transaction }
+    );
+    const fantaRed = await Product.create(
+      {
+        productId: 7,
+        productName: "Fanta-Red",
+        price: 20,
+        productImage:
+          "https://st.bigc-cs.com/cdn-cgi/image/format=webp,quality=85/public/media/catalog/product/73/88/8855199143173/8855199143173_1-20230123110041-.jpg",
+      },
+      { transaction }
+    );
 
     await VendingProduct.create(
       {
@@ -113,7 +133,7 @@ const seedData = async () => {
       {
         vendingMachineId: vendingMachine1.vendingMachineId,
         productId: chips.productId,
-        stock: 20,
+        stock: 0,
       },
       { transaction }
     );
@@ -121,7 +141,7 @@ const seedData = async () => {
       {
         vendingMachineId: vendingMachine1.vendingMachineId,
         productId: water.productId,
-        stock: 20,
+        stock: 1,
       },
       { transaction }
     );
@@ -129,6 +149,30 @@ const seedData = async () => {
       {
         vendingMachineId: vendingMachine1.vendingMachineId,
         productId: juice.productId,
+        stock: 3,
+      },
+      { transaction }
+    );
+    await VendingProduct.create(
+      {
+        vendingMachineId: vendingMachine1.vendingMachineId,
+        productId: noodles.productId,
+        stock: 3,
+      },
+      { transaction }
+    );
+    await VendingProduct.create(
+      {
+        vendingMachineId: vendingMachine1.vendingMachineId,
+        productId: fantaRed.productId,
+        stock: 20,
+      },
+      { transaction }
+    );
+    await VendingProduct.create(
+      {
+        vendingMachineId: vendingMachine1.vendingMachineId,
+        productId: chocolate.productId,
         stock: 20,
       },
       { transaction }

@@ -12,7 +12,6 @@ export const ProductList = () => {
       try {
         const res = await axios.get(`/vending-machine/${vendingMachineId}`);
         setProducts(res.data);
-        console.log(res.data);
       } catch (error) {
         console.error(error);
       }
@@ -28,10 +27,11 @@ export const ProductList = () => {
             key={product.productId}
             product={product}
             vendingMachineId={vendingMachineId}
+            fetchInventory={fetchInventory}
           />
         ))}
       </div>
-      <PaymentUI />
+      {/* <PaymentUI /> */}
     </>
   );
 };

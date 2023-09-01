@@ -37,6 +37,7 @@ export const PaymentUI = ({
     setCashInserted({});
     onConfirm();
   };
+  
   const handleConfirm = async () => {
     // Calculate the total amount based on the number of each coin/note entered
     let totalAmount = 0;
@@ -47,7 +48,7 @@ export const PaymentUI = ({
     try {
       const coinsInserted = {};
       const notesInserted = {};
-      // Separate the cashInserted object into coinsInserted and notesInserted
+      // Separate the cash inserted in to types: coins/notes
       for (const [cashType, count] of Object.entries(cashInserted)) {
         if (cashType.includes("Coin")) {
           coinsInserted[cashType] = count;
@@ -55,11 +56,6 @@ export const PaymentUI = ({
           notesInserted[cashType] = count;
         }
       }
-      console.log("cashInserted", cashInserted);
-      console.log("coinsInserted:", coinsInserted);
-      console.log("notesInserted:", notesInserted);
-      console.log("vendingMachineId", vendingMachineId);
-      console.log("productId:", productId);
 
       const res = await axios.patch(
         `http://localhost:3000/vending-machine/${vendingMachineId}/transaction`,
@@ -70,7 +66,7 @@ export const PaymentUI = ({
           productId: productId,
         }
       );
-      console.log("cash inserted: ", cashInserted);
+
       // close the tab when done processing
       setCashInserted({});
       setSuccess(res.data);
