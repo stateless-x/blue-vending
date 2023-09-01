@@ -2,7 +2,7 @@ $primary: #173ebd;
 $confirm: #b6ff49;
 $confirm-2: #c1f573;
 
-/* Payment Container */
+// Payment Container
 .payment-container {
     min-width: 100vw;
     height: 60vh;
@@ -29,7 +29,7 @@ $confirm-2: #c1f573;
     }
 }
 
-/* Cash Inserted Display */
+// Cash Inserted Display
 .cash-inserted-display {
     display: flex;
     align-items: center;
@@ -45,7 +45,7 @@ $confirm-2: #c1f573;
     }
 }
 
-/* Slide Up Animation */
+// Slide Up Animation
 @keyframes slideUp {
     0% {
         transform: translateY(100%);
@@ -55,7 +55,7 @@ $confirm-2: #c1f573;
     }
 }
 
-/* Dialog */
+// Dialog
 .dialog {
     position: fixed;
     width: 40%;
@@ -84,7 +84,7 @@ $confirm-2: #c1f573;
     }
 }
 
-/* Cash Input */
+// Cash Input
 .cash-input {
     padding: 1.5rem 1rem;
     display: grid;
@@ -94,7 +94,7 @@ $confirm-2: #c1f573;
     width: 100%;
 }
 
-/* Cash Inputs Container */
+// Cash Inputs Container
 .cash-inputs-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -106,7 +106,7 @@ $confirm-2: #c1f573;
     }
 }
 
-/* Cash Input Wrapper */
+// Cash Input Wrapper
 .cash-input-wrapper {
     display: flex;
     flex-direction: column;
@@ -128,7 +128,7 @@ $confirm-2: #c1f573;
     }
 }
 
-/* Payment Actions */
+// Payment Actions
 .payment-actions {
     display: flex;
     flex-direction: column;
