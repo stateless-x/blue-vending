@@ -15,14 +15,14 @@ export const PaymentUI = ({
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const cashValues = {
-    Coin1THB: { value: 1, display: "+1 THB" },
-    Coin5THB: { value: 5, display: "+5 THB" },
-    Coin10THB: { value: 10, display: "+10 THB" },
-    Note20THB: { value: 20, display: "+20 THB" },
-    Note50THB: { value: 50, display: "+50 THB" },
-    Note100THB: { value: 100, display: "+100 THB" },
-    Note500THB: { value: 500, display: "+500 THB" },
-    Note1000THB: { value: 1000, display: "+1000 THB" },
+    Coin1THB: { value: 1, display: "1 THB" },
+    Coin5THB: { value: 5, display: "5 THB" },
+    Coin10THB: { value: 10, display: "10 THB" },
+    Note20THB: { value: 20, display: "20 THB" },
+    Note50THB: { value: 50, display: "50 THB" },
+    Note100THB: { value: 100, display: "100 THB" },
+    Note500THB: { value: 500, display: "500 THB" },
+    Note1000THB: { value: 1000, display: "1000 THB" },
   };
   const handleCashInput = (value) => {
     setCashInserted((prevCashInserted) => ({
@@ -83,31 +83,48 @@ export const PaymentUI = ({
   };
   return (
     <div className={`payment-container ${isVisible ? "show" : ""}`}>
-      <div className="cash-inserted-display">
-        <span>
-          Total:{" "}
-          {Object.keys(cashInserted).reduce(
-            (total, coinType) =>
-              total + cashInserted[coinType] * cashValues[coinType].value,
-            0
-          )}
-          {" of "}
-          {price} baht
-        </span>
-      </div>
-      <div className="cash-inputs">
-        {Object.keys(cashValues).map((coinType) => (
-          <button key={coinType} onClick={() => handleCashInput(coinType)}>
-            {cashValues[coinType].display}
+      <div className="cash-input-wrapper">
+        <div className="cash-inserted-display">
+          <span>
+            {Object.keys(cashInserted).reduce(
+              (total, coinType) =>
+                total + cashInserted[coinType] * cashValues[coinType].value,
+              0
+            )}
+            {" of "}
+            {price} baht
+          </span>
+        </div>
+        <div className="cash-inputs-container">
+          {Object.keys(cashValues).map((coinType) => (
+            <button
+              className="cash-input"
+              key={coinType}
+              onClick={() => handleCashInput(coinType)}
+            >
+              {cashValues[coinType].display}
+            </button>
+          ))}
+          <button
+            className="cash-input"
+            onClick={() => {
+              setCashInserted({});
+            }}
+          >
+            Reset
           </button>
-        ))}
+        </div>
       </div>
-      <button className="confirm-payment" onClick={handleConfirm}>
-        Confirm Payment
-      </button>
-      <button className="cancel-payment" onClick={onCancel}>
-        Cancel
-      </button>
+
+      <div className="payment-actions">
+        <button className="confirm-payment" onClick={handleConfirm}>
+          Confirm
+        </button>
+        <button className="cancel-payment" onClick={onCancel}>
+          Cancel
+        </button>
+      </div>
+
       {success && (
         <>
           <div className="overlay"></div>
