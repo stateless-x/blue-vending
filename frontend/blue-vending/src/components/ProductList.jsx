@@ -7,29 +7,21 @@ export const ProductList = () => {
   const [products, setProducts] = useState([]);
 
   const vendingMachineId = 1; //displaying only 1 vending machine
-  useEffect(() => {
-    const fetchInventory = async () => {
-      try {
-        const res = await axios.get(`http://localhost:3000/vending-machine/${vendingMachineId}`);
-        setProducts(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchInventory();
-  }, []);
-  
-  const handleStockUpdate = async () => {
+  const fetchInventory = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/stock/${vendingMachineId}`
+        `http://localhost:3000/vending-machine/${vendingMachineId}`
       );
       setProducts(res.data);
     } catch (error) {
-      console.error("Error updating products:", error);
+      console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
   return (
     <>
       <div className="product-list-container">
@@ -38,11 +30,10 @@ export const ProductList = () => {
             key={product.productId}
             product={product}
             vendingMachineId={vendingMachineId}
-            onStockUpdate={handleStockUpdate}
+            onStockUpdate={fetchInventory}
           />
         ))}
       </div>
-      {/* <PaymentUI /> */}
     </>
   );
 };

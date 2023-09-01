@@ -12,7 +12,7 @@ Product.hasMany(VendingProduct, { foreignKey: "productId" });
 VendingProduct.belongsTo(Product, { foreignKey: "productId" });
 
 sequelize.sync({ force: false }).then(() => {
-  console.log("Database & Table Created");
+  console.log("sequelize sync'd");
 });
 
 module.exports = { Product, VendingMachine, VendingProduct };

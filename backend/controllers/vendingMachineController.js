@@ -105,7 +105,7 @@ exports.processTransaction = async (req, res) => {
       changeGiven
     );
   }
-  console.log("changeToGive: ", changeToGive);
+
   if (changeToGive > 0) {
     return res
       .status(400)
