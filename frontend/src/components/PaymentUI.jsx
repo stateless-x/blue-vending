@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import "../styles/paymentUI.scss";
-import "../styles/Product.scss";
 
 export const PaymentUI = ({
   isVisible,
