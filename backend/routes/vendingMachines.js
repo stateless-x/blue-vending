@@ -20,6 +20,4 @@ router.patch(
   vendingMachineController.processTransaction
 );
 
-router.get("/stock/:vendingMachineId", vendingMachineController.getStock);
-
 module.exports = router;

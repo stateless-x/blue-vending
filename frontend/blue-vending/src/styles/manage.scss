@@ -1,0 +1,57 @@
+@import "var";
+
+.manage-bg {
+    background-color: $primary;
+}
+
+.dashboard-wrapper {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 80%;
+    min-height: 100vh;
+}
+
+.cash-section,
+.stock-section {
+    padding: 2rem 10rem;
+    h2 {
+        margin-bottom: 0.5rem;
+    }
+
+    h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    @media (max-width: 1240px) {
+        padding: 2rem 4rem;
+    }
+}
+
+.stock-items,
+.cash-item {
+    display: grid;
+    margin-top: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 1240px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 480px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+.available {
+    color: green;
+}
+
+.out-of-stock {
+    color: red;
+}
+
+.spacing {
+    margin-bottom: 0.5rem;
+}

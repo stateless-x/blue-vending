@@ -190,42 +190,6 @@ exports.getAllVendingMachines = async (req, res) => {
   }
 };
 
-exports.getStock = async (req, res) => {
-  try {
-    const vp = await VendingProduct.findAll({
-      where: {
-        vendingMachineId: req.params.vendingMachineId,
-      },
-      attributes: ["productId", "stock"],
-      order: [["stock", "DESC"]],
-      include: [
-        {
-          model: Product,
-          attributes: ["productName", "price", "productImage"],
-        },
-      ],
-    });
-
-    if (!vp || vp.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "No products found for the given vending machine" });
-    }
-
-    const formattedResponse = vp.map((item) => ({
-      productId: item.productId,
-      stock: item.stock,
-      productName: item.Product.productName, // Notice the reference to "item.Product"
-      price: item.Product.price,
-      productImage: item.Product.productImage,
-    }));
-    return res.json(formattedResponse);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-};
-
 function validateCashInput(body, isTransaction) {
   let coins, notes;
   if (isTransaction) {

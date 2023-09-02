@@ -4,10 +4,10 @@ export const Navbar = () => {
   return (
     <nav>
       <NavLink className="nav-item" to="/">
-        Vending
+        Sales
       </NavLink>
       <NavLink className="nav-item" to="/manage">
-        Manage
+        Monitor
       </NavLink>
     </nav>
   );

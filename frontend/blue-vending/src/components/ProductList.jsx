@@ -1,8 +1,7 @@
 import { Product } from "./Product";
-import { PaymentUI } from "./PaymentUI";
+import { useState, useEffect } from "react";
 import "../styles/product.scss";
 import axios from "axios";
-import { useState, useEffect } from "react";
 export const ProductList = () => {
   const [products, setProducts] = useState([]);
 
