@@ -112,6 +112,17 @@ exports.processTransaction = async (req, res) => {
       .send("Sorry, not enough change. Please try again later.");
   }
 
+  const totalChangeReturned = Object.entries(changeGiven).reduce(
+    (total, [type, count]) => {
+      const value = parseInt(
+        type.replace(/(Coin|Note)/, "").replace("THB", ""),
+        10
+      );
+      return total + value * count;
+    },
+    0
+  );
+
   try {
     //update coinstock in the machine
     await VendingMachine.update(
@@ -126,7 +137,11 @@ exports.processTransaction = async (req, res) => {
     await VendingProduct.decrement("stock", {
       where: { vendingMachineId: vendingMachineId, productId: productId },
     });
-    return res.status(200).send("Transaction successful");
+    return res.status(200).json({
+      msg: "Thank you for your purchase!",
+      changeDetails: changeGiven,
+      totalChangeReturned: totalChangeReturned,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Something went wrong");
@@ -138,7 +153,7 @@ exports.getMachineInventory = async (req, res) => {
     console.log(req.params);
     const inventory = await VendingProduct.findAll({
       where: { vendingMachineId: req.params.vendingMachineId },
-      order:[['stock','DESC']],
+      order: [["stock", "DESC"]],
       include: [
         {
           model: Product,
@@ -182,7 +197,7 @@ exports.getStock = async (req, res) => {
         vendingMachineId: req.params.vendingMachineId,
       },
       attributes: ["productId", "stock"],
-      order: [['stock','DESC']],
+      order: [["stock", "DESC"]],
       include: [
         {
           model: Product,

@@ -10,11 +10,11 @@ export const PaymentUI = ({
   price,
   vendingMachineId,
   productId,
-  onTransactionComplete
+  onTransactionComplete,
 }) => {
   const [cashInserted, setCashInserted] = useState({});
   const [err, setErr] = useState("");
-  const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState({});
   const cashValues = {
     Coin1THB: { value: 1, display: "1 THB" },
     Coin5THB: { value: 5, display: "5 THB" },
@@ -34,11 +34,11 @@ export const PaymentUI = ({
 
   const closeDialog = () => {
     setErr("");
-    setSuccess("");
+    setSuccess({});
     setCashInserted({});
     onConfirm();
   };
-  
+
   const handleConfirm = async () => {
     // Calculate the total amount based on the number of each coin/note entered
     let totalAmount = 0;
@@ -70,7 +70,16 @@ export const PaymentUI = ({
 
       // close the tab when done processing
       setCashInserted({});
-      setSuccess(res.data);
+      const changeDetailsString = Object.entries(res.data.changeDetails)
+        .map(([type, count]) => `${type}: ${count}`)
+        .join("\n");
+
+      const data = {
+        title: res.data.msg,
+        changeDetails: changeDetailsString,
+        total: res.data.totalChangeReturned,
+      };
+      setSuccess(data);
       onTransactionComplete();
     } catch (error) {
       if (error.response) {
@@ -90,7 +99,7 @@ export const PaymentUI = ({
               0
             )}
             {" of "}
-            {price} baht
+            {price} Baht
           </span>
         </div>
         <div className="cash-inputs-container">
@@ -123,11 +132,19 @@ export const PaymentUI = ({
         </button>
       </div>
 
-      {success && (
+      {success.title && (
         <>
           <div className="overlay"></div>
           <div className="dialog">
-            <p className>{success}</p>
+            <h3>{success.title}</h3>
+            {success.total > 0 && (
+              <>
+                <h5>Cash Returned:</h5>
+                <p className="cash-returned">{success.changeDetails}</p>
+                <h5>Total Change:</h5>
+                <p>{success.total} THB </p>
+              </>
+            )}
             <button className="dialog-actions" onClick={closeDialog}>
               OK
             </button>
