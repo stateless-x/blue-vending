@@ -1,0 +1,253 @@
+openapi: "3.0.3"
+info:
+  title: "Blue Vending API By Purin"
+  version: "1.0"
+  description: "API for vending machine and product management"
+servers:
+  - url: "http://localhost:3000"
+
+paths:
+  /products:
+    get:
+      summary: "Get all products from the database"
+      responses:
+        200:
+          description: "List of all products"
+          content:
+            application/json:
+              examples: 
+                productList:
+                  value:
+                    - productId: 1
+                      productName: "Cola"
+                      price: 20
+                      productImage: "https://some-image.jpg"
+                      createdAt: "2023-09-02T10:09:22.186Z"
+                      updatedAt: "2023-09-02T10:09:22.186Z"
+    post:
+      summary: "Add a new product to the database (Not the vending machine itself)"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productName:
+                  type: string
+                price:
+                  type: integer
+            example:
+              productName: "Mountain Dew"
+              price: 25
+      responses:
+        201:
+          description: "Product created"
+  
+  /product/{productId}:
+    get:
+      summary: "Get a product by ID"
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "Single product"
+          content:
+            application/json:
+              example:
+                value:
+                  productId: 1
+                  productName: "Cola"
+                  price: 20
+                  productImage: "https://some-image.jpg"
+                  createdAt: "2023-09-02T10:09:22.186Z"
+                  updatedAt: "2023-09-02T10:09:22.186Z"
+    patch:
+      summary: "Update a product by ID, in case, price increases or invalid product name added"
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productName:
+                  type: string
+                price:
+                  type: integer
+            example:
+              productName: "Coffee"
+              price: 45
+      responses:
+        200:
+          description: "Product updated"
+    delete:
+      summary: "Delete a product by ID"
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: "Product deleted"
+  
+  # Vending Machine Routes
+  
+  /vending-machine/{vendingMachineId}:
+    get:
+      summary: "Get vending machine inventory by ID"
+      parameters:
+        - in: path
+          name: vendingMachineId
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "Vending machine inventory"
+          content:
+            application/json:
+              example:
+                value:
+                  - productId: 7
+                    productName: "Fanta-Red"
+                    price: 20
+                    productImage: "https://some-image.jpg"
+                    stock: 20
+    patch:
+      summary: "Transaction processing: update cash reserves in vending machine and adjust stock."
+      parameters:
+        - in: path
+          name: vendingMachineId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coinStock:
+                  type: object
+                noteStock:
+                  type: object
+            example:
+              coinStock:
+                Coin1THB: 10
+                Coin5THB: 15
+                Coin10THB: 5
+              noteStock:
+                Note20THB: 5
+                Note50THB: 7
+                Note100THB: 3
+                Note500THB: 0
+                Note1000THB: 0
+      responses:
+        200:
+          description: "Cash reserves updated"
+  
+  /vending-machine/{vendingMachineId}/cash:
+    get:
+      summary: "Get cash reserves of a vending machine by ID"
+      parameters:
+        - in: path
+          name: vendingMachineId
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "Cash reserves data"
+          content:
+            application/json:
+              example:
+                value:
+                  vendingMachineId: 1
+                  coinStock:
+                    Coin1THB: 10
+                    Coin5THB: 8
+                    Coin10THB: 0
+                  noteStock:
+                    Note20THB: 0
+                    Note50THB: 0
+                    Note100THB: 0
+                    Note1000THB: 1
+                  currentCash: 1050
+                  createdAt: "2023-09-02T10:09:22.170Z"
+                  updatedAt: "2023-09-02T13:33:31.861Z"
+  '/vending-machine/{vendingMachineId}/transaction':
+    patch:
+      summary: 'Process a transaction in a vending machine'
+      parameters:
+        - name: 'vendingMachineId'
+          in: 'path'
+          required: true
+          schema:
+            type: 'integer'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: 'object'
+              properties:
+                coinsInserted:
+                  type: 'object'
+                  example:
+                    Coin1THB: 5
+                    Coin5THB: 2
+                    Coin10THB: 1
+                  additionalProperties:
+                    type: 'integer'
+                notesInserted:
+                  type: 'object'
+                  example:
+                    Note20THB: 1
+                    Note50THB: 0
+                    Note100THB: 0
+                  additionalProperties:
+                    type: 'integer'
+                vendingMachineId:
+                  type: 'integer'
+                  example: 0
+                productId:
+                  type: 'integer'
+                  example: 0
+      responses:
+        200:
+          description: "Successful operation"
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  msg:
+                    type: 'string'
+                    example: 'Thank you for your purchase!'
+                  changeDetails:
+                    type: 'object'
+                    additionalProperties:
+                      type: 'integer'
+                    example:
+                      Coin5THB: 6
+                  totalChangeReturned:
+                    type: 'integer'
+                    example: 30
+        400:
+          description: 'Bad Request - Invalid Input or Not Enough Funds'
+        500:
+          description: 'Internal Server Error'
