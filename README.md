@@ -1,15 +1,15 @@
 ## About this Application
-    This Application is a fullstack web application of Vending Machine and Management System.
-**As a client**, you are able to purchase product directly from the UI with virtual cash assigned by the system.
+    This Application is a fullstack web application of Vending Machine and Management System.  
+**As a client**, you are able to purchase product directly from the UI with virtual cash assigned by the system.   
 **As the owner**, you are able to manage and monitor products for each individual machine. 
 You will be able to know the current cash remaining in the system which will be used for change. 
 You will also know the stock remaining in each machines
 
-**In Summary, you can**
-In Client:
+**In Summary, you can**  
+In Client:  
     - Purchase Items
     - Monitor stock of the machines and current cash 
-APIs:
+APIs:  
     - Add new Product to the system
     - Update product name and pricing
     - Remove Product frm the system
@@ -19,8 +19,7 @@ APIs:
         - The system process this once client complete the purchase
 
 ---
-
-What can be improved in the future.
+### What can be improved in the future.  
 - Messaging/Notification system once product is low on stock or the cash run out
 - Profit calculator
 - Sales Dashboard
