@@ -1,25 +1,35 @@
 ## About this Application
-    This Application is a fullstack web application of Vending Machine and Management System.  
-**As a client**, you are able to purchase product directly from the UI with virtual cash assigned by the system.   
-**As the owner**, you are able to manage and monitor products for each individual machine. 
-You will be able to know the current cash remaining in the system which will be used for change. 
-You will also know the stock remaining in each machines
 
-**In Summary, you can**  
-In Client:  
-    - Purchase Items
-    - Monitor stock of the machines and current cash 
-APIs:  
-    - Add new Product to the system
-    - Update product name and pricing
-    - Remove Product frm the system
-    - Assign products to each machines individually
-        - For example: You want to Add Cola on Vending Machine A, But Add Coffee to Vending Machine B. Each of them will have different products
-    - Update cash and stock of the machine after each transaction 
-        - The system process this once client complete the purchase
+This Application is a fullstack web application of Vending Machine and Management System.
+
+**As a client**, you are able to purchase product directly from the UI with virtual cash assigned by the system.  
+
+**As the owner**, you are able to manage and monitor products for each individual machine.  
+You will be able to know the current cash remaining in the system which will be used for change.  
+You will also know the stock remaining in each machines.
 
 ---
-### What can be improved in the future.  
+
+**In Summary, you can**
+
+**In Client:**  
+
+- Purchase Items  
+- Monitor stock of the machines and current cash
+
+**APIs:**  
+
+- Add new Product to the system  
+- Update product name and pricing  
+- Remove Product from the system  
+- Assign products to each machines individually  
+  - For example: You want to Add Cola on Vending Machine A, But Add Coffee to Vending Machine B. Each of them will have different products  
+- Update cash and stock of the machine after each transaction  
+  - The system processes this once the client completes the purchase
+
+
+---
+## What can be improved in the future.  
 - Messaging/Notification system once product is low on stock or the cash run out
 - Profit calculator
 - Sales Dashboard
