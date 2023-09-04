@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "../styles/paymentUI.scss";
+import {CASH_VALUES} from "./constant"
 
 export const PaymentUI = ({
   isVisible,
@@ -14,23 +15,14 @@ export const PaymentUI = ({
   const [cashInserted, setCashInserted] = useState({});
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState({});
-  const cashValues = {
-    Coin1THB: { value: 1, display: "1 THB" },
-    Coin5THB: { value: 5, display: "5 THB" },
-    Coin10THB: { value: 10, display: "10 THB" },
-    Note20THB: { value: 20, display: "20 THB" },
-    Note50THB: { value: 50, display: "50 THB" },
-    Note100THB: { value: 100, display: "100 THB" },
-    Note500THB: { value: 500, display: "500 THB" },
-    Note1000THB: { value: 1000, display: "1000 THB" },
-  };
   const handleCashInput = (value) => {
     setCashInserted((prevCashInserted) => ({
       ...prevCashInserted,
       [value]: (prevCashInserted[value] || 0) + 1,
     }));
   };
-
+  
+  // reset states
   const closeDialog = () => {
     setErr("");
     setSuccess({});
@@ -39,15 +31,10 @@ export const PaymentUI = ({
   };
 
   const handleConfirm = async () => {
+    const coinsInserted = {};
+    const notesInserted = {};
     // Calculate the total amount based on the number of each coin/note entered
-    let totalAmount = 0;
-    for (const [coinType, count] of Object.entries(cashInserted)) {
-      totalAmount += cashValues[coinType].value * count;
-    }
-
     try {
-      const coinsInserted = {};
-      const notesInserted = {};
       // Separate the cash inserted in to types: coins/notes
       for (const [cashType, count] of Object.entries(cashInserted)) {
         if (cashType.includes("Coin")) {
@@ -58,7 +45,9 @@ export const PaymentUI = ({
       }
 
       const res = await axios.patch(
-        `${import.meta.env.VITE_API}/api/vending-machine/${vendingMachineId}/transaction`,
+        `${
+          import.meta.env.VITE_API
+        }/api/vending-machine/${vendingMachineId}/transaction`,
         {
           coinsInserted: coinsInserted,
           notesInserted: notesInserted,
@@ -67,19 +56,26 @@ export const PaymentUI = ({
         }
       );
 
-      // close the tab when done processing
-      setCashInserted({});
-      const changeDetailsString = Object.entries(res.data.changeDetails)
-        .map(([type, count]) => `${type}: ${count}`)
-        .join("\n");
+      if (res) {
+        //stringify keys and values to show changes (coins and number of coins returnd)
+        const changeDetailsString = Object.entries(res.data.changeDetails)
+          .map(([type, count]) => `${type}: ${count}`)
+          .join("\n");
 
-      const data = {
-        title: res.data.msg,
-        changeDetails: changeDetailsString,
-        total: res.data.totalChangeReturned,
-      };
-      setSuccess(data);
-      onTransactionComplete();
+        // packing change data into object to display
+        const data = {
+          title: res.data.msg,
+          changeDetails: changeDetailsString,
+          total: res.data.totalChangeReturned,
+        };
+
+        // close the tab and reset coins inserted when done processing
+        setCashInserted({});
+        setSuccess(data);
+        
+        //re-fetchInventory in case stock = 0
+        onTransactionComplete();
+      }
     } catch (error) {
       if (error.response) {
         setErr(error.response.data);
@@ -87,14 +83,17 @@ export const PaymentUI = ({
       console.log(error);
     }
   };
+
   return (
+    // Show Payment tabs when product selected
     <div className={`payment-container ${isVisible ? "show" : ""}`}>
       <div className="cash-input-wrapper">
+        {/* display amount inserted */}
         <div className="cash-inserted-display">
           <span>
             {Object.keys(cashInserted).reduce(
               (total, coinType) =>
-                total + cashInserted[coinType] * cashValues[coinType].value,
+                total + cashInserted[coinType] * CASH_VALUES[coinType].value,
               0
             )}
             {" of "}
@@ -102,15 +101,17 @@ export const PaymentUI = ({
           </span>
         </div>
         <div className="cash-inputs-container">
-          {Object.keys(cashValues).map((coinType) => (
+          {/* cash by buttons */}
+          {Object.keys(CASH_VALUES).map((coinType) => (
             <button
               className="cash-input"
               key={coinType}
               onClick={() => handleCashInput(coinType)}
             >
-              {cashValues[coinType].display}
+              {CASH_VALUES[coinType].display}
             </button>
           ))}
+          {/* reset button */}
           <button
             className="cash-input"
             onClick={() => {
@@ -121,7 +122,6 @@ export const PaymentUI = ({
           </button>
         </div>
       </div>
-
       <div className="payment-actions">
         <button className="confirm-payment" onClick={handleConfirm}>
           Confirm
@@ -130,7 +130,7 @@ export const PaymentUI = ({
           Cancel
         </button>
       </div>
-
+      {/* after transaction dialog */}
       {success.title && (
         <>
           <div className="overlay"></div>
@@ -150,6 +150,7 @@ export const PaymentUI = ({
           </div>
         </>
       )}
+      {/* failed transaction dialog */}
       {err && (
         <>
           <div className="overlay"></div>
