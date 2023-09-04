@@ -5,18 +5,18 @@
 You will be able to know the current cash remaining in the system which will be used for change. 
 You will also know the stock remaining in each machines
 
-**In Summary, as the owner, You can:**
-    - In Client:
-        - Purchase Items
-        - Monitor stock of the machines and current cash 
-    - APIs:
-        - Add new Product to the system
-        - Update product name and pricing
-        - Remove Product frm the system
-        - Assign products to each machines individually
-            - For example: You want to Add Cola on Vending Machine A, But Add Coffee to Vending Machine B. Each of them will have different products
-        - Update cash and stock of the machine after each transaction 
-            - The system process this once client complete the purchase
+**In Summary, you can**
+In Client:
+    - Purchase Items
+    - Monitor stock of the machines and current cash 
+APIs:
+    - Add new Product to the system
+    - Update product name and pricing
+    - Remove Product frm the system
+    - Assign products to each machines individually
+        - For example: You want to Add Cola on Vending Machine A, But Add Coffee to Vending Machine B. Each of them will have different products
+    - Update cash and stock of the machine after each transaction 
+        - The system process this once client complete the purchase
 
 ---
 
