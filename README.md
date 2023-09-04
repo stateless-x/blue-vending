@@ -43,14 +43,15 @@ version: 1
 ![BluePi](https://github.com/stateless-x/blue-vending/assets/22858489/926d96e5-4624-445e-9ea4-14b76a7263e7)
 
 ---
-## How to run the application:
+## How to run the application: (Windows)
+
 1. Run docker compose file from root folder
 
 ```bash
 docker-compose up
 ```
 
-2. Populate Data
+2. Populate Data on separate terminal tab while containers are running
 
 ```bash
 docker exec -it blue-vending-api-1 node /app/seed.js
