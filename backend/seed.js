@@ -4,12 +4,9 @@ const {
   VendingProduct,
 } = require("./models/modelCollection");
 const sequelize = require("./database");
-const { resetDatabase } = require("./resetDB");
-
 const seedData = async () => {
-  await resetDatabase();
+  console.log("Seeding Data")
   const transaction = await sequelize.transaction();
-
   try {
     const vendingMachine1 = await VendingMachine.create(
       {
