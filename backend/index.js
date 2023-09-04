@@ -1,13 +1,18 @@
+console.log("Starting server...");
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
-const allRoutes = require("./routes/allRoutes");
-
 app.use(cors());
+const allRoutes = require("./routes/allRoutes");
 app.use(bodyParser.json());
 app.use(allRoutes);
 
-app.listen(3000, () => {
-  console.log("app is running on port 3000");
-});
+const API_PORT = process.env.PORT || 3000;
+try {
+  app.listen(API_PORT, () => {
+    console.log(`Server runnin on port: ${API_PORT}`);
+  });
+} catch (error) {
+  console.error("Failed to start server:", error);
+}

@@ -1,0 +1,37 @@
+version: "3.1"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: bluevending
+      POSTGRES_USER: purin
+      POSTGRES_PASSWORD: qwerty123
+    ports:
+      - "5432:5432"
+  api:
+    build:
+      dockerfile: Dockerfile 
+      context: ./backend
+    command: npm start
+    volumes:
+      - "./backend:/app"
+    environment:
+      - DB_NAME=bluevending
+      - DB_USERNAME=purin
+      - DB_PASSWORD=qwerty123
+      - DB_HOST=db
+      - DB_DIALECT=postgres
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    environment:
+      - VITE_API=http://localhost:3000
+    command: npm run dev
+    tty: true
+    ports:
+      - "5173:5173"

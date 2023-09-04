@@ -9,7 +9,7 @@ export const ProductList = () => {
   const fetchInventory = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/vending-machine/${vendingMachineId}`
+        `${import.meta.env.VITE_API}/api/vending-machine/${vendingMachineId}`
       );
       setProducts(res.data);
     } catch (error) {

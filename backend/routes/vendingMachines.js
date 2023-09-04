@@ -2,21 +2,21 @@ const vendingMachineController = require("../controllers/vendingMachineControlle
 const express = require("express");
 const router = express.Router();
 
-router.get("/vending-machines", vendingMachineController.getAllVendingMachines);
+router.get("/api/vending-machines", vendingMachineController.getAllVendingMachines);
 router.get(
-  "/vending-machine/:vendingMachineId",
+  "/api/vending-machine/:vendingMachineId",
   vendingMachineController.getMachineInventory
 );
 router.get(
-  "/vending-machine/:vendingMachineId/cash",
+  "/api/vending-machine/:vendingMachineId/cash",
   vendingMachineController.getCashReserves
 );
 router.patch(
-  "/vending-machine/:vendingMachineId",
+  "/api/vending-machine/:vendingMachineId",
   vendingMachineController.updateCashReserves
 );
 router.patch(
-  "/vending-machine/:vendingMachineId/transaction",
+  "/api/vending-machine/:vendingMachineId/transaction",
   vendingMachineController.processTransaction
 );
 

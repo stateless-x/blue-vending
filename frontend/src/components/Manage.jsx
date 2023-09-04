@@ -10,7 +10,7 @@ export const Manage = () => {
   const fetchMachineDetails = async () => {
     try {
       let res = await axios.get(
-        `http://localhost:3000/vending-machine/${vendingMachineId}/cash`
+        `${import.meta.env.VITE_API}/api/vending-machine/${vendingMachineId}/cash`
       );
       setCashDetails(res.data);
     } catch (error) {
@@ -21,7 +21,7 @@ export const Manage = () => {
   const fetchInventory = async () => {
     try {
       let res = await axios.get(
-        `http://localhost:3000/vending-machine/${vendingMachineId}`
+        `${import.meta.env.VITE_API}/api/vending-machine/${vendingMachineId}`
       );
       setProducts(res.data);
       console.log(res.data);
@@ -34,6 +34,7 @@ export const Manage = () => {
     fetchMachineDetails();
     fetchInventory();
   }, []);
+
   return (
     <div className="manage-bg">
       <div className="dashboard-wrapper">

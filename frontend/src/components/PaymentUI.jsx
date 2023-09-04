@@ -58,7 +58,7 @@ export const PaymentUI = ({
       }
 
       const res = await axios.patch(
-        `http://localhost:3000/vending-machine/${vendingMachineId}/transaction`,
+        `${import.meta.env.VITE_API}/api/vending-machine/${vendingMachineId}/transaction`,
         {
           coinsInserted: coinsInserted,
           notesInserted: notesInserted,
