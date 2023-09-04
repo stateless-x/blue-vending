@@ -56,7 +56,8 @@ docker exec -it blue-vending-api-1 node /app/seed.js
 ```
 
 **Note:**  
-If step 2 doesn't work please try the method below:
+If step 2 doesn't work please try the method below:  
+```docker ps```
 
 Get the name from *blue-vending-api* and use that name to replace the *blue-vending-api-1*
 
