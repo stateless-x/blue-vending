@@ -3,16 +3,8 @@ const {
   Product,
   VendingProduct,
 } = require("../models/modelCollection");
-
-const validCoinTypes = ["Coin1THB", "Coin5THB", "Coin10THB"];
-const validNoteTypes = [
-  "Note20THB",
-  "Note50THB",
-  "Note100THB",
-  "Note500THB",
-  "Note1000THB",
-];
-
+const { VALID_COINS, VALID_NOTES } = require("./constants.js");
+// get cash by machine id
 exports.getCashReserves = async (req, res) => {
   try {
     const vm = await fetchCashReserves(req.params.vendingMachineId);
@@ -26,6 +18,7 @@ exports.getCashReserves = async (req, res) => {
   }
 };
 
+// update or create cash by machine id
 exports.updateCashReserves = async (req, res) => {
   try {
     const existing = await fetchCashReserves(req.params.vendingMachineId);
@@ -49,7 +42,7 @@ exports.processTransaction = async (req, res) => {
   const { coinsInserted, notesInserted, vendingMachineId, productId } =
     req.body;
 
-  //validate transaction
+  //validate transaction machines and product must exist
   const [vm, product] = await Promise.all([
     VendingMachine.findByPk(vendingMachineId),
     Product.findByPk(productId),
@@ -61,7 +54,7 @@ exports.processTransaction = async (req, res) => {
   if (!validateCashInput(req.body, true)) {
     return res.status(400).send("Invalid Cash Input");
   }
-
+  // assign stock of cash inside the machine
   let coinStock = vm.coinStock;
   let noteStock = vm.noteStock;
   const productPrice = product.price;
@@ -71,6 +64,7 @@ exports.processTransaction = async (req, res) => {
     notesInserted
   );
 
+  // if not enough cash inserted, don't allow them to proceed
   if (totalCashInserted < productPrice) {
     return res
       .status(400)
@@ -84,13 +78,14 @@ exports.processTransaction = async (req, res) => {
   let changeToGive = totalCashInserted - productPrice;
   const changeGiven = {};
   // sorted so that higher goes first
-  const sortedCoinTypes = parseAndSortCashType(validCoinTypes, "Coin");
-  const sortedNoteTypes = parseAndSortCashType(validNoteTypes, "Note");
+  const sortedCoinTypes = parseAndSortCashType(VALID_NOTES, "Coin");
+  const sortedNoteTypes = parseAndSortCashType(VALID_COINS, "Note");
   const allCashTypes = parseAndSortCashType(
     [...sortedCoinTypes, ...sortedNoteTypes],
     /(Coin|Note)/
   );
 
+  // calculate change
   for (const cashType of allCashTypes) {
     const cashValue = parseInt(
       cashType.replace(/(Coin|Note)/, "").replace("THB", ""),
@@ -111,7 +106,7 @@ exports.processTransaction = async (req, res) => {
       .status(400)
       .send("Sorry, not enough change. Please try again later.");
   }
-
+  // total amount to return (by values)
   const totalChangeReturned = Object.entries(changeGiven).reduce(
     (total, [type, count]) => {
       const value = parseInt(
@@ -133,10 +128,13 @@ exports.processTransaction = async (req, res) => {
       },
       { where: { vendingMachineId: vendingMachineId } }
     );
+
     //update product stock in the machine
     await VendingProduct.decrement("stock", {
       where: { vendingMachineId: vendingMachineId, productId: productId },
     });
+
+    // return data to client
     return res.status(200).json({
       msg: "Thank you for your purchase!",
       changeDetails: changeGiven,
@@ -148,9 +146,10 @@ exports.processTransaction = async (req, res) => {
   }
 };
 
+// get inventory of the machine by id
 exports.getMachineInventory = async (req, res) => {
   try {
-    console.log(req.params);
+    // put product with lower stock below for better user experience
     const inventory = await VendingProduct.findAll({
       where: { vendingMachineId: req.params.vendingMachineId },
       order: [["stock", "DESC"]],
@@ -161,6 +160,7 @@ exports.getMachineInventory = async (req, res) => {
         },
       ],
     });
+
     const formattedInventory = inventory.map((item) => {
       return {
         productId: item.Product.productId,
@@ -170,6 +170,7 @@ exports.getMachineInventory = async (req, res) => {
         stock: item.stock,
       };
     });
+
     if (formattedInventory.length === 0) {
       return res.status(400).send("inventory not avaialable");
     }
@@ -180,6 +181,7 @@ exports.getMachineInventory = async (req, res) => {
   }
 };
 
+// get data of all machines (not using this in client yet. just for backend debugging)
 exports.getAllVendingMachines = async (req, res) => {
   try {
     const vm = await VendingMachine.findAll();
@@ -201,15 +203,17 @@ function validateCashInput(body, isTransaction) {
   }
 
   for (const coinType in body.coinStock) {
-    if (!validCoinTypes.includes(coinType)) {
+    if (!VALID_NOTES.includes(coinType)) {
       return false;
     }
   }
+
   for (const noteType in body.noteStock) {
-    if (!validNoteTypes.includes(noteType)) {
+    if (!VALID_COINS.includes(noteType)) {
       return false;
     }
   }
+
   return true;
 }
 
@@ -248,7 +252,6 @@ async function updateExistedCashReserve(body, params) {
 
 function calculateTotalCash(coinStock, noteStock) {
   let totalCash = 0;
-
   for (const [coinType, coinCount] of Object.entries(coinStock)) {
     const coinValue = parseInt(
       coinType.replace("Coin", "").replace("THB", ""),
@@ -267,7 +270,7 @@ function calculateTotalCash(coinStock, noteStock) {
 
   return totalCash;
 }
-
+// utility to remove string from key and parse to int (eg. Coin10THB => 10)
 function parseAndSortCashType(validTypes, keyword) {
   return validTypes.sort(
     (a, b) =>
@@ -308,6 +311,7 @@ function calculateOptimalChangeForType(
 ) {
   //make sure the system has enough change to give out and give out more than it suppose to
   if (changeToGive >= cashValue && stock[cashType] > 0) {
+    //max possible units of this cash type.
     const maxCashToDispense = Math.min(
       Math.floor(changeToGive / cashValue),
       stock[cashType]

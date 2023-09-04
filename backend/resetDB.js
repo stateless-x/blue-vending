@@ -1,3 +1,5 @@
+//utility for development, not using anymore
+
 const sequelize = require("./database");
 const {
   VendingMachine,
